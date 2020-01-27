@@ -6,11 +6,12 @@
 //  Copyright (c) 2015 Umang Arya. All rights reserved.
 //
 
-#import "PaymentViewController.h"   
+#import "PaymentViewController.h"
+#import "PayUSURLFURLResponseHandler.h"
 
-@interface PaymentViewController ()<UIWebViewDelegate>
+@interface PaymentViewController ()<UIWebViewDelegate, PayUSURLFURLResponseDelegate>
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (strong, nonatomic) PayUSURLFURLResponseHandler *sURLFURLHandler;
 
 @end
 
@@ -20,29 +21,36 @@
     [super viewDidLoad];
     [_webView loadRequest:_request];
     _webView.delegate = self;
-    [self.activityIndicator startAnimating];
-    [self.activityIndicator setHidesWhenStopped:YES];
+    [self configurePayUSDKResponse];
 }
 
-
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
-    [self.activityIndicator startAnimating];
-
-    return true;
+-(void)configurePayUSDKResponse{
+    self.sURLFURLHandler = [[PayUSURLFURLResponseHandler alloc] init];
+    self.sURLFURLHandler.delegate = self;
 }
-- (void)webViewDidStartLoad:(UIWebView *)webView{
-    [self.activityIndicator startAnimating];
-}
+
 - (void)webViewDidFinishLoad:(UIWebView *)webView{
-    [self.activityIndicator stopAnimating];
-}
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error{
-    [self.activityIndicator stopAnimating];
+    [self.sURLFURLHandler webViewDidFinishLoad:webView];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+#pragma mark - PayUSURLFURLResponseDelegate Handling
+
+- (void)PayUFURLResponse:(nonnull id)response {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if([self.delegate respondsToSelector:@selector(PayUFURLResponse:)])
+        {
+            [self.delegate PayUFURLResponse:response];
+        }
+    });
+}
+
+- (void)PayUSURLResponse:(nonnull id)response {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if([self.delegate respondsToSelector:@selector(PayUSURLResponse:)])
+        {
+            [self.delegate PayUSURLResponse:response];
+        }
+    });
 }
 
 @end

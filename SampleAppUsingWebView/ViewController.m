@@ -8,123 +8,114 @@
 
 #import "ViewController.h"
 #import "PaymentViewController.h"
+#import "Utils.h"
 
-#define KEY             @"gtKFFx"
+//#define KEY             @"gtKFFx"
 //#define KEY             @"smsplus"
-//#define KEY             @"0MQaQP"
+#define KEY             @"0MQaQP"
 #define AMOUNT          @"10.5"
 #define PRODUCTINFO     @"Nokia"
 #define FIRSTNAME       @"Ram"
 #define EMAIL           @"email@testsdk.com"
 #define PHONE           @"9876543210"
-#define FURL            @"https://dl.dropboxusercontent.com/s/h6m11xr93mxhfvf/Failure_iOS.html"
-#define SURL            @"https://dl.dropboxusercontent.com/s/y911hgtgdkkiy0w/success_iOS.html"
+#define FURL            @"https://payu.herokuapp.com/ios_failure"
+#define SURL            @"https://payu.herokuapp.com/ios_success"
 #define USERCREDENTIAL  @"ra:ra"
 #define OFFERKEY        @"test123@6622"
 
+#define URL             @"https://secure.payu.in/_payment"  // prod URL
+//#define URL             @"https://mobiletest.payu.in/_payment"  // test URL
 
-@interface ViewController ()
+@interface ViewController ()<PayUSURLFURLResponseDelegate>
 
-@property (strong, nonatomic) IBOutlet UIButton *PayButton;
-@property (strong, nonatomic) NSMutableURLRequest *req;
-@property (strong, nonatomic) NSString *TxnID;
-@property (strong, nonatomic) NSString *PaymentHash;
-
-typedef void (^urlRequestCompletionBlock)(NSURLResponse *response, NSData *data, NSError *connectionError);
+@property (strong, nonatomic) IBOutlet UIButton *btnPayNow;
+@property (strong, nonatomic) NSString *transactionID;
+@property (strong, nonatomic) NSString *paymentHash;
 
 @end
 
 @implementation ViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-}
-
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:true];
+    [self initialSetup];
+}
+
+-(void)initialSetup {
     [self.activityIndicator startAnimating];
     [self.activityIndicator setHidesWhenStopped:YES];
-    self.PayButton.enabled = false;
-    self.TxnID = [self randomStringWithLength:15];
-    NSLog(@"Transaction ID = %@",self.TxnID);
-    [self generateHashFromServer:nil withCompletionBlock:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+    
+    self.transactionID = [Utils randomStringWithLength:10];
+    
+    self.btnPayNow.enabled = false;
+    
+    NSString *postDataForHash = [NSString stringWithFormat:@"key=%@&hash=%@&email=%@&amount=%@&firstname=%@&txnid=%@&user_credentials=%@&productinfo=%@&phone=%@&udf1=&udf2=&udf3=&udf4=&udf5=",KEY,@"hash",EMAIL,AMOUNT,FIRSTNAME,self.transactionID,USERCREDENTIAL,PRODUCTINFO,PHONE];
+    
+    [Utils getPaymentHash:postDataForHash withCompletionBlock:^(NSString * _Nonnull paymentHash) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            NSLog(@"Payment Hash = %@",self.PaymentHash);
-            self.PayButton.enabled = true;
+            self.paymentHash = paymentHash;
+            self.btnPayNow.enabled = true;
             [self.activityIndicator stopAnimating];
         });
     }];
 }
 
-- (IBAction)payButtonClicked:(id)sender {
-    
-    NSString *postData = [[NSString alloc]init];
+- (NSMutableURLRequest *) getPayURequestObject {
+    NSString *postData = [NSString new];
     
     NSURL *restURL = [NSURL new];
-    //restURL = [NSURL URLWithString:@"https://secure.payu.in/_payment"];
-    restURL = [NSURL URLWithString:@"https://mobiletest.payu.in/_payment"];
-    self.req=[NSMutableURLRequest requestWithURL:restURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
-    self.req.HTTPMethod = @"POST";
+    NSMutableURLRequest *request;
+    restURL = [NSURL URLWithString:URL];
+    request = [NSMutableURLRequest requestWithURL:restURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+    request.HTTPMethod = @"POST";
     /* Format to generate hash Value
      hashValue = @"key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5||||||SALT";
-    */
-    postData = [NSString stringWithFormat:@"key=%@&email=%@&amount=%@&firstname=%@&txnid=%@&user_credentials=%@&productinfo=%@&phone=%@&surl=%@&furl=%@&offer_key=%@&hash=%@",KEY,EMAIL,AMOUNT,FIRSTNAME,self.TxnID,USERCREDENTIAL,PRODUCTINFO,PHONE,SURL,FURL,OFFERKEY,self.PaymentHash];
+     */
+    postData = [NSString stringWithFormat: @"key=%@&email=%@&amount=%@&firstname=%@&txnid=%@&user_credentials=%@&productinfo=%@&phone=%@&surl=%@&furl=%@&offer_key=%@&hash=%@", KEY, EMAIL, AMOUNT, FIRSTNAME, self.transactionID, USERCREDENTIAL, PRODUCTINFO, PHONE, SURL, FURL, OFFERKEY, self.paymentHash];
     NSLog(@"Post Data = %@",postData);
-    [self.req setValue:@"application/x-www-form-urlencoded; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
-    [self.req setHTTPBody:[postData dataUsingEncoding:NSUTF8StringEncoding]];
+    [request setValue:@"application/x-www-form-urlencoded; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    [request setHTTPBody:[postData dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    return request;
+}
+
+#pragma mark - IBAction Handling
+
+- (IBAction)payButtonClicked:(id)sender {
     PaymentViewController *PVC = [self.storyboard instantiateViewControllerWithIdentifier:@"PVC"];
-    PVC.request = self.req;
+    PVC.request = [self getPayURequestObject];
+    PVC.delegate = self;
     [self.navigationController pushViewController:PVC animated:true];
-//    [self presentViewController:PVC animated:true completion:nil];
-    
 }
 
-// Method to generate random Transaction ID
+#pragma mark - PayUSURLFURLResponseDelegate Handling
 
--(NSString *) randomStringWithLength:(int) len {
-    NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    NSMutableString *randomString = [NSMutableString stringWithCapacity: len];
-    for (int i=0; i<len; i++) {
-        [randomString appendFormat: @"%C", [letters characterAtIndex: arc4random_uniform((u_int32_t)[letters length])]];
-    }
+- (void)PayUFURLResponse:(id)response {
+    [self.navigationController popViewControllerAnimated:true];
     
-    return randomString;
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"FURL Response"
+                                                                   message:response
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault
+                                                          handler:nil];
+    
+    [alert addAction:defaultAction];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
-// Method to get hash from server
-
-- (void) generateHashFromServer:(NSDictionary *) paramDict withCompletionBlock:(urlRequestCompletionBlock)completionBlock{
+- (void)PayUSURLResponse:(id)response {
+    [self.navigationController popViewControllerAnimated:true];
     
-    void(^serverResponseForHashGenerationCallback)(NSURLResponse *response, NSData *data, NSError *error) = completionBlock;
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"SURL Response"
+                                                                   message:response
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault
+                                                          handler:nil];
     
-    NSURL *restURL = [NSURL URLWithString:@"https://payu.herokuapp.com/get_hash"];
-    NSMutableURLRequest *theRequest=[NSMutableURLRequest requestWithURL:restURL
-                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                        timeoutInterval:60.0];
-    theRequest.HTTPMethod = @"POST";
-    NSString *postData = [NSString stringWithFormat:@"key=%@&hash=%@&email=%@&amount=%@&firstname=%@&txnid=%@&user_credentials=%@&productinfo=%@&phone=%@&udf1=&udf2=&udf3=&udf4=&udf5=",KEY,@"hash",EMAIL,AMOUNT,FIRSTNAME,self.TxnID,USERCREDENTIAL,PRODUCTINFO,PHONE];
-    NSLog(@"Hash generation Post Data = %@",postData);
-    
-    //set request content type we MUST set this value.
-    [theRequest setValue:@"application/x-www-form-urlencoded; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
-    
-    //set post data of request
-    [theRequest setHTTPBody:[postData dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    NSOperationQueue *networkQueue = [[NSOperationQueue alloc] init];
-    [NSURLConnection sendAsynchronousRequest:theRequest queue:networkQueue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        NSError *errorJson = nil;
-        NSDictionary *hashDict = [NSDictionary new];
-        hashDict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&errorJson];
-        self.PaymentHash = [hashDict valueForKey:@"payment_hash"];
-        NSLog(@"Payment Hash = %@",self.PaymentHash);
-        serverResponseForHashGenerationCallback(response, data,connectionError);
-    }];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    [alert addAction:defaultAction];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 @end
+
+
