@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PayUSURLFURLResponseHandler.h"
 
 @interface PaymentViewController : UIViewController
 
 @property (strong,nonatomic) NSMutableURLRequest *request;
-
+@property (weak, nonatomic) id<PayUSURLFURLResponseDelegate> delegate;
 
 @end

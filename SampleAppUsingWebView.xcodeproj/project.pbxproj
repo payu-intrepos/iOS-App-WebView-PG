@@ -15,6 +15,8 @@
 		730BAB881B72169500C5AD10 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 730BAB861B72169500C5AD10 /* LaunchScreen.xib */; };
 		730BAB941B72169500C5AD10 /* SampleAppUsingWebViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 730BAB931B72169500C5AD10 /* SampleAppUsingWebViewTests.m */; };
 		730BAB9F1B7216D900C5AD10 /* PaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 730BAB9E1B7216D900C5AD10 /* PaymentViewController.m */; };
+		DD41572023D9C036002F588F /* PayUSURLFURLResponseHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = DD41571F23D9C036002F588F /* PayUSURLFURLResponseHandler.m */; };
+		DD41572323D9CA42002F588F /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = DD41572223D9CA42002F588F /* Utils.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +45,10 @@
 		730BAB931B72169500C5AD10 /* SampleAppUsingWebViewTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SampleAppUsingWebViewTests.m; sourceTree = "<group>"; };
 		730BAB9D1B7216D900C5AD10 /* PaymentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaymentViewController.h; sourceTree = "<group>"; };
 		730BAB9E1B7216D900C5AD10 /* PaymentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaymentViewController.m; sourceTree = "<group>"; };
+		DD41571E23D9C036002F588F /* PayUSURLFURLResponseHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PayUSURLFURLResponseHandler.h; sourceTree = "<group>"; };
+		DD41571F23D9C036002F588F /* PayUSURLFURLResponseHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PayUSURLFURLResponseHandler.m; sourceTree = "<group>"; };
+		DD41572123D9CA42002F588F /* Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
+		DD41572223D9CA42002F588F /* Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +90,7 @@
 		730BAB761B72169500C5AD10 /* SampleAppUsingWebView */ = {
 			isa = PBXGroup;
 			children = (
+				DD41572423DEC0CC002F588F /* SURL FURL Handler */,
 				730BAB7B1B72169500C5AD10 /* AppDelegate.h */,
 				730BAB7C1B72169500C5AD10 /* AppDelegate.m */,
 				730BAB7E1B72169500C5AD10 /* ViewController.h */,
@@ -94,6 +101,8 @@
 				730BAB841B72169500C5AD10 /* Images.xcassets */,
 				730BAB861B72169500C5AD10 /* LaunchScreen.xib */,
 				730BAB771B72169500C5AD10 /* Supporting Files */,
+				DD41572123D9CA42002F588F /* Utils.h */,
+				DD41572223D9CA42002F588F /* Utils.m */,
 			);
 			path = SampleAppUsingWebView;
 			sourceTree = "<group>";
@@ -122,6 +131,15 @@
 				730BAB921B72169500C5AD10 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		DD41572423DEC0CC002F588F /* SURL FURL Handler */ = {
+			isa = PBXGroup;
+			children = (
+				DD41571E23D9C036002F588F /* PayUSURLFURLResponseHandler.h */,
+				DD41571F23D9C036002F588F /* PayUSURLFURLResponseHandler.m */,
+			);
+			name = "SURL FURL Handler";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -187,6 +205,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -228,6 +247,8 @@
 			files = (
 				730BAB801B72169500C5AD10 /* ViewController.m in Sources */,
 				730BAB7D1B72169500C5AD10 /* AppDelegate.m in Sources */,
+				DD41572023D9C036002F588F /* PayUSURLFURLResponseHandler.m in Sources */,
+				DD41572323D9CA42002F588F /* Utils.m in Sources */,
 				730BAB7A1B72169500C5AD10 /* main.m in Sources */,
 				730BAB9F1B7216D900C5AD10 /* PaymentViewController.m in Sources */,
 			);

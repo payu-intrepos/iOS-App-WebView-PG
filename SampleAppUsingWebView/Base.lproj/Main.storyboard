@@ -1,7 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Ez6-v6-byE">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="Ez6-v6-byE">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -13,28 +16,28 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="ddb-J0-Cdy">
-                                <rect key="frame" x="135" y="259" width="50" height="50"/>
+                                <rect key="frame" x="182" y="423" width="50" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="DeV-Rz-5J7"/>
                                     <constraint firstAttribute="height" constant="50" id="ats-1B-aCw"/>
                                 </constraints>
                             </activityIndicatorView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2wZ-ua-P69">
-                                <rect key="frame" x="137" y="324" width="47" height="46"/>
+                                <rect key="frame" x="185.5" y="488" width="44" height="46"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="28"/>
                                 <state key="normal" title="Pay">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="payButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4ui-6w-Zfg"/>
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="centerY" secondItem="ddb-J0-Cdy" secondAttribute="centerY" id="1As-7b-xso"/>
                             <constraint firstAttribute="centerX" secondItem="ddb-J0-Cdy" secondAttribute="centerX" id="Qbb-U9-TlM"/>
@@ -44,13 +47,13 @@
                     </view>
                     <navigationItem key="navigationItem" id="C5X-PW-IZG"/>
                     <connections>
-                        <outlet property="PayButton" destination="2wZ-ua-P69" id="QUI-RQ-gXf"/>
                         <outlet property="activityIndicator" destination="ddb-J0-Cdy" id="fIw-mg-Pgp"/>
+                        <outlet property="btnPayNow" destination="2wZ-ua-P69" id="QUI-RQ-gXf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="724" y="320"/>
+            <point key="canvasLocation" x="1049.2753623188407" y="214.28571428571428"/>
         </scene>
         <!--Payment View Controller-->
         <scene sceneID="EiG-Bd-iKC">
@@ -61,25 +64,16 @@
                         <viewControllerLayoutGuide type="bottom" id="Ka9-3u-54i"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="TZp-Dj-7NF">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="brm-Pd-O5j">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="862"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </webView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="ncR-ZT-mEb">
-                                <rect key="frame" x="140" y="264" width="40" height="40"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="eFg-Eb-WBd"/>
-                                    <constraint firstAttribute="width" constant="40" id="hxz-Jz-3ek"/>
-                                </constraints>
-                            </activityIndicatorView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="centerY" secondItem="ncR-ZT-mEb" secondAttribute="centerY" id="LyI-fb-k5e"/>
-                            <constraint firstAttribute="centerX" secondItem="ncR-ZT-mEb" secondAttribute="centerX" id="P9G-yb-qJf"/>
                             <constraint firstItem="brm-Pd-O5j" firstAttribute="leading" secondItem="TZp-Dj-7NF" secondAttribute="leading" id="TDL-rg-W5n"/>
                             <constraint firstAttribute="trailing" secondItem="brm-Pd-O5j" secondAttribute="trailing" id="Z1p-3z-hbb"/>
                             <constraint firstItem="Ka9-3u-54i" firstAttribute="top" secondItem="brm-Pd-O5j" secondAttribute="bottom" id="aQE-wc-Gc0"/>
@@ -87,13 +81,12 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="activityIndicator" destination="ncR-ZT-mEb" id="MJg-0j-ueo"/>
                         <outlet property="webView" destination="brm-Pd-O5j" id="4Jj-Qw-9nV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CsS-EU-Yim" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1147" y="320"/>
+            <point key="canvasLocation" x="1662.3188405797102" y="214.28571428571428"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="tEV-bM-cfJ">
@@ -101,7 +94,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Ez6-v6-byE" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="jWo-Tj-YoE">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -111,12 +104,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fxQ-No-aAL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="192" y="320"/>
+            <point key="canvasLocation" x="278.26086956521743" y="214.28571428571428"/>
         </scene>
     </scenes>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>
